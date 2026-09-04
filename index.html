@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saudi Power Connect | Manpower & B2B Outreach KSA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --pop: 'Poppins', sans-serif; --fun: 'Fredoka', sans-serif; }
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: var(--pop); background: #0f0a1e; overflow-x: hidden; color: white; }
+        .fun { font-family: var(--fun); }
+        
+        .hero-grad { 
+            background: linear-gradient(135deg, #7c3aed 0%, #ec4899 35%, #f97316 70%, #eab308 100%); 
+            background-size: 300% 300%; 
+            animation: gradShift 8s ease infinite; 
+        }
+        @keyframes gradShift { 
+            0% { background-position: 0% 50%; } 
+            50% { background-position: 100% 50%; } 
+            100% { background-position: 0% 50%; } 
+        }
+        
+        .card-glow { transition: all 0.35s cubic-bezier(.34,1.56,.64,1); }
+        .card-glow:hover { 
+            transform: translateY(-8px) scale(1.02); 
+            box-shadow: 0 20px 40px -12px rgba(236,72,153,.3), 0 0 30px rgba(124,58,237,.2); 
+            border-color: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .pulse-ring { animation: pulseRing 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+        @keyframes pulseRing { 
+            0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,.5); } 
+            50% { box-shadow: 0 0 0 10px rgba(34,197,94,0); } 
+        }
+        
+        .slide-up { animation: slideUp .5s ease forwards; }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        .new-item-anim { animation: highlightNew 3s ease forwards; }
+        @keyframes highlightNew {
+            0% { box-shadow: 0 0 30px 10px rgba(234, 179, 8, 0.8); border-color: #eab308; }
+            100% { box-shadow: none; border-color: rgba(255,255,255,0.1); }
+        }
+
+        .ticker { animation: ticker 30s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        
+        .btn-wa { background: linear-gradient(135deg,#25D366,#128C7E); transition: filter 0.3s; }
+        .btn-wa:hover { filter: brightness(1.2); }
+        .btn-mail { background: linear-gradient(135deg,#3b82f6,#7c3aed); transition: filter 0.3s; }
+        .btn-mail:hover { filter: brightness(1.2); }
+        
+        .stat-num { 
+            background: linear-gradient(90deg,#fbbf24,#f472b6,#a78bfa); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        
+        .blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .4; pointer-events: none; z-index: -1;}
+        
+        .new-badge { animation: badgePop 2s ease infinite; }
+        @keyframes badgePop { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        
+        input:focus, select:focus { outline: none; box-shadow: 0 0 0 3px rgba(236,72,153,.5); border-color: #ec4899; }
+        
+        /* Toast notification */
+        #toast {
+            visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center;
+            border-radius: 8px; padding: 16px; position: fixed; z-index: 100; left: 50%; transform: translateX(-50%);
+            bottom: 30px; font-size: 14px; transition: visibility 0.5s, opacity 0.5s linear; opacity: 0; border: 1px solid rgba(255,255,255,0.2);
+        }
+        #toast.show { visibility: visible; opacity: 1; }
+    </style>
+</head>
+<body class="text-white min-h-screen">
+
+    <!-- Floating blobs -->
+    <div class="blob w-96 h-96 bg-purple-600 top-0 -left-20"></div>
+    <div class="blob w-80 h-80 bg-pink-500 top-40 right-0"></div>
+    <div class="blob w-96 h-96 bg-blue-600 bottom-0 left-1/4"></div>
+
+    <!-- NAV -->
+    <nav class="sticky top-0 z-50 backdrop-blur-xl bg-[#0f0a1e]/80 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl bg-white/10 p-2 rounded-xl border border-white/20">🚀</span>
+                <div>
+                    <div class="fun text-xl md:text-2xl font-bold bg-gradient-to-r from-yellow-300 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+                        KSA Business Connect
+                    </div>
+                    <div class="text-[10px] md:text-xs text-pink-300 tracking-widest uppercase">
+                        Manpower & B2B Lead Generator
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hidden lg:flex items-center gap-6 text-sm font-semibold">
+                <a href="#directory" class="text-white/70 hover:text-yellow-300 transition">Directory</a>
+                <a href="#bulk" class="text-white/70 hover:text-yellow-300 transition">Bulk Outreach</a>
+                <a href="#new" class="text-white/70 hover:text-yellow-300 transition flex items-center gap-1">
+                    Auto-Updates <span class="w-2 h-2 rounded-full bg-green-500 pulse-ring"></span>
+                </a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <span id="liveIndicator" class="hidden md:inline-flex items-center gap-2 text-xs bg-green-500/10 text-green-400 px-3 py-1.5 rounded-full border border-green-500/30">
+                    <div class="w-2 h-2 bg-green-500 rounded-full pulse-ring"></div>
+                    Live Updates Active
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero-grad relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 py-16 md:py-20 relative z-10 text-center">
+            
+            <div class="inline-flex items-center gap-2 bg-black/40 backdrop-blur-md px-5 py-2 rounded-full text-sm font-semibold mb-6 border border-white/20 shadow-xl">
+                <span class="text-yellow-400">⚡</span> 
+                <span>New KSA companies added automatically every few minutes.</span>
+            </div>
+
+            <h1 class="fun text-4xl md:text-5xl lg:text-7xl font-bold leading-tight mb-6 drop-shadow-2xl">
+                Reach Every Company in Saudi Arabia.<br>
+                <span class="text-yellow-200">Email & WhatsApp</span> Instantly.
+            </h1>
+            
+            <p class="text-base md:text-xl text-white/95 max-w-3xl mx-auto mb-10 font-medium bg-black/20 p-4 rounded-xl backdrop-blur-sm border border-white/10">
+                The ultimate tool for Manpower and B2B businesses. Get direct communication shortcuts. <strong class="text-yellow-300">Live system automatically fetches and displays new company registrations.</strong> Never miss a lead.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center max-w-3xl mx-auto">
+                <div class="relative flex-1 text-gray-900">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">🔍</span>
+                    <input id="searchBox" type="text" placeholder="Search by company name, industry, or city..." class="w-full pl-12 pr-6 py-4 rounded-2xl bg-white/95 font-semibold text-lg placeholder-gray-500 shadow-2xl transition-all focus:bg-white">
+                </div>
+                <button onclick="document.getElementById('directory').scrollIntoView()" class="px-8 py-4 rounded-2xl bg-gray-900 border border-gray-700 font-bold text-lg hover:bg-black transition shadow-2xl whitespace-nowrap">
+                    Explore Directory 👇
+                </button>
+            </div>
+
+            <!-- ticker -->
+            <div class="mt-12 overflow-hidden bg-black/30 py-3 border-y border-white/10 backdrop-blur-md">
+                <div id="tickerContent" class="ticker flex gap-8 whitespace-nowrap text-sm font-semibold text-white/80">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="max-w-7xl mx-auto px-4 -mt-8 relative z-20">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-[#1a1333]/80 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl text-center">
+                <div id="statCompanies" class="stat-num fun text-4xl font-black">0</div>
+                <div class="text-sm font-medium text-gray-400 mt-2 uppercase tracking-wide">Total Companies</div>
+            </div>
+            <div class="bg-[#1a1333]/80 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl text-center">
+                <div id="statEmails" class="stat-num fun text-4xl font-black">0</div>
+                <div class="text-sm font-medium text-gray-400 mt-2 uppercase tracking-wide">Valid Emails</div>
+            </div>
+            <div class="bg-[#1a1333]/80 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl text-center">
+                <div id="statWa" class="stat-num fun text-4xl font-black">0</div>
+                <div class="text-sm font-medium text-gray-400 mt-2 uppercase tracking-wide">WhatsApp Nos.</div>
+            </div>
+            <div class="bg-gradient-to-br from-green-900/50 to-[#1a1333]/80 backdrop-blur-xl rounded-2xl p-6 border border-green-500/30 shadow-2xl text-center relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-16 h-16 bg-green-500/20 blur-xl rounded-full"></div>
+                <div class="stat-num fun text-4xl font-black text-green-400" style="background:none;-webkit-text-fill-color: #4ade80;">Active</div>
+                <div class="text-sm font-medium text-green-300/70 mt-2 uppercase tracking-wide">Auto-Add Engine</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BULK ACTIONS SECTION -->
+    <section id="bulk" class="max-w-7xl mx-auto px-4 mt-16">
+        <div class="bg-gradient-to-r from-blue-900/40 via-purple-900/40 to-pink-900/40 border border-white/10 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+                <h2 class="fun text-2xl font-bold mb-2">📥 Manpower Mass Outreach</h2>
+                <p class="text-gray-300 text-sm">Need to send proposals to many companies? Filter the list below, then copy all their emails at once to paste into your BCC field.</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="copyVisibleEmails()" class="bg-white text-black font-bold px-6 py-3 rounded-xl hover:bg-gray-200 transition shadow-lg flex items-center gap-2 whitespace-nowrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Copy All Emails
+                </button>
+                <button onclick="copyVisiblePhones()" class="bg-green-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-green-700 transition shadow-lg flex items-center gap-2 whitespace-nowrap">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Copy All WhatsApp
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FILTERS + DIRECTORY -->
+    <section id="directory" class="max-w-7xl mx-auto px-4 py-12">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 border-b border-white/10 pb-6">
+            <div>
+                <h2 class="fun text-3xl md:text-4xl font-bold flex items-center gap-3">
+                    🏢 Company Directory
+                    <span id="updatePulse" class="hidden w-3 h-3 bg-yellow-400 rounded-full shadow-[0_0_10px_#facc15]"></span>
+                </h2>
+                <p class="text-gray-400 text-sm mt-2">One click to open WhatsApp or default Email client. Newest companies appear first.</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                <div class="flex items-center gap-2 text-sm text-gray-400 font-medium mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg> Filters:
+                </div>
+                <select id="industryFilter" class="flex-1 lg:flex-none bg-[#1a1333] border border-white/20 rounded-xl px-4 py-2.5 text-sm font-semibold text-white appearance-none cursor-pointer">
+                    <option value="">All Industries</option>
+                    <option>Construction & Engineering</option>
+                    <option>Oil & Gas</option>
+                    <option>Manufacturing</option>
+                    <option>Logistics & Transport</option>
+                    <option>Trading & Retail</option>
+                    <option>Healthcare</option>
+                    <option>IT & Telecom</option>
+                    <option>Hospitality</option>
+                </select>
+                <select id="cityFilter" class="flex-1 lg:flex-none bg-[#1a1333] border border-white/20 rounded-xl px-4 py-2.5 text-sm font-semibold text-white appearance-none cursor-pointer">
+                    <option value="">All Cities (KSA)</option>
+                    <option>Riyadh</option>
+                    <option>Jeddah</option>
+                    <option>Dammam</option>
+                    <option>Al Khobar</option>
+                    <option>Mecca</option>
+                    <option>Medina</option>
+                    <option>Jubail</option>
+                    <option>Yanbu</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- The Grid -->
+        <div id="grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <!-- Cards injected via JS -->
+        </div>
+        
+        <div id="noResults" class="hidden flex-col items-center justify-center py-20 text-center">
+            <div class="text-6xl mb-4">🏜️</div>
+            <h3 class="text-2xl font-bold text-white mb-2">No companies found</h3>
+            <p class="text-gray-400">Try adjusting your search or filters.</p>
+            <button onclick="resetFilters()" class="mt-4 text-pink-400 underline hover:text-pink-300">Clear all filters</button>
+        </div>
+    </section>
+
+    <!-- AUTO UPDATE EXPLANATION BANNER -->
+    <section id="new" class="max-w-7xl mx-auto px-4 pb-20">
+        <div class="rounded-3xl overflow-hidden border border-yellow-500/30 bg-[#1a1333]/80 p-8 relative flex flex-col md:flex-row items-center gap-8 shadow-2xl">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500"></div>
+            
+            <div class="flex-1">
+                <div class="inline-block new-badge bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">LIVE SYSTEM ACTIVE</div>
+                <h2 class="fun text-3xl font-bold mb-4">How the Auto-Add Works</h2>
+                <p class="text-gray-300 mb-4 leading-relaxed">
+                    Our backend system constantly monitors public Saudi commercial registries and business directories. As soon as a new business is registered or updates its contact info, our bots scrape, verify, and format the data.
+                </p>
+                <p class="text-gray-300 leading-relaxed">
+                    <strong>For Manpower Agencies:</strong> This means you get access to new companies that are setting up and likely need staffing immediately, before your competitors do. Keep this page open to see new leads pop up in real-time.
+                </p>
+            </div>
+            
+            <div class="md:w-1/3 bg-black/40 p-6 rounded-2xl border border-white/5 font-mono text-xs text-green-400 relative overflow-hidden h-48">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 z-10 pointer-events-none"></div>
+                <div id="terminalText" class="absolute bottom-6 left-6 right-6 flex flex-col gap-2 transition-transform duration-300">
+                    <div>> Initializing connection to KSA registry...</div>
+                    <div>> Connection established.</div>
+                    <div>> Listening for updates...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 bg-black/50 py-8 text-center text-gray-500 text-sm">
+        <p>Saudi Power Connect - B2B & Manpower Outreach Tool</p>
+        <p class="mt-2 text-xs">Developed for demonstration purposes. Data is simulated.</p>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toast">Message</div>
+
+    <script>
+        // --- Data Mocking (Simulating Backend Database) ---
+        
+        const cities = ['Riyadh', 'Jeddah', 'Dammam', 'Al Khobar', 'Mecca', 'Medina', 'Jubail', 'Yanbu', 'Abha', 'Tabuk'];
+        const industries = ['Construction & Engineering', 'Oil & Gas', 'Manufacturing', 'Logistics & Transport', 'Trading & Retail', 'Healthcare', 'IT & Telecom', 'Hospitality'];
+        const prefixes = ['Al', 'Saudi', 'National', 'Arabian', 'United', 'Gulf', 'Middle East', 'Desert', 'Oasis'];
+        const coreNames = ['Tech', 'Build', 'Energy', 'Logistics', 'Trading', 'Power', 'Health', 'Services', 'Contracting', 'Steel', 'Cement'];
+        const suffixes = ['Co.', 'LLC', 'Group', 'Est.', 'Corporation'];
+
+        // Generate a random Saudi mobile number
+        function getRandomPhone() {
+            return `+9665${Math.floor(Math.random() * 90000000 + 10000000)}`;
+        }
+
+        // Generate a realistic looking company
+        function generateCompany(isNew = false) {
+            const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const core = coreNames[Math.floor(Math.random() * coreNames.length)];
+            const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+            const name = `${prefix} ${core} ${suffix}`;
+            
+            const city = cities[Math.floor(Math.random() * cities.length)];
+            const industry = industries[Math.floor(Math.random() * industries.length)];
+            
+            // Create email from name
+            const emailPrefix = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+            const domains = ['gmail.com', 'yahoo.com', `${emailPrefix}.com.sa`, `${emailPrefix}.sa`];
+            const email = `info@${domains[Math.floor(Math.random() * domains.length)]}`;
+            
+            const phone = getRandomPhone();
+            const waLink = `https://wa.me/${phone.replace('+', '')}?text=Hello, we are a manpower supplier in KSA.`;
+
+            return {
+                id: Math.random().toString(36).substr(2, 9),
+                name, city, industry, email, phone, waLink,
+                addedAt: isNew ? Date.now() : Date.now() - Math.floor(Math.random() * 10000000000),
+                isNew
+            };
+        }
+
+        // Global State
+        let companiesData = [];
+        let filteredData = [];
+        let totalStats = { companies: 24532, emails: 18400, wa: 21105 }; // Starting fake stats
+
+        // Initialize Data
+        function initData() {
+            // Generate initial batch to fill the screen
+            for(let i=0; i<40; i++) {
+                companiesData.push(generateCompany(false));
+            }
+            // Sort by newest first
+            companiesData.sort((a, b) => b.addedAt - a.addedAt);
+            filteredData = [...companiesData];
+            updateStatsUI(true);
+            renderGrid();
+            setupTicker();
+        }
+
+        // --- UI Rendering ---
+
+        function getIndustryIcon(industry) {
+            const icons = {
+                'Construction & Engineering': '🏗️', 'Oil & Gas': '🛢️', 'Manufacturing': '🏭',
+                'Logistics & Transport': '🚛', 'Trading & Retail': '🛒', 'Healthcare': '🏥',
+                'IT & Telecom': '💻', 'Hospitality': '🏨'
+            };
+            return icons[industry] || '🏢';
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('grid');
+            const noResults = document.getElementById('noResults');
+            
+            grid.innerHTML = '';
+            
+            if (filteredData.length === 0) {
+                grid.style.display = 'none';
+                noResults.style.display = 'flex';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            noResults.style.display = 'none';
+
+            filteredData.forEach(company => {
+                const card = document.createElement('div');
+                // Apply 'new-item-anim' if it was just added to draw attention
+                const animClass = company.isNew ? 'new-item-anim' : '';
+                
+                card.className = `bg-[#1a1333] border border-white/10 rounded-2xl p-5 card-glow slide-up relative flex flex-col justify-between h-full ${animClass}`;
+                
+                // Remove 'isNew' flag after rendering so it doesn't animate again if filtered
+                if(company.isNew) {
+                    setTimeout(() => { company.isNew = false; }, 3000);
+                }
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-2xl">${getIndustryIcon(company.industry)}</span>
+                            <span class="text-xs font-semibold px-2 py-1 rounded bg-white/5 text-gray-400 border border-white/5">
+                                📍 ${company.city}
+                            </span>
+                        </div>
+                        <h3 class="font-bold text-lg leading-tight mb-1 truncate" title="${company.name}">${company.name}</h3>
+                        <p class="text-xs text-pink-300 mb-4">${company.industry}</p>
+                    </div>
+                    
+                    <div class="space-y-2 mt-auto">
+                        <!-- Email Row -->
+                        <div class="flex gap-2">
+                            <a href="mailto:${company.email}" class="flex-1 btn-mail text-white text-sm font-semibold py-2 px-3 rounded-xl flex items-center justify-center gap-2">
+                                ✉️ Email
+                            </a>
+                            <button onclick="copyText('${company.email}', this)" class="bg-white/10 hover:bg-white/20 border border-white/10 p-2 rounded-xl text-gray-300 transition" title="Copy Email">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </button>
+                        </div>
+                        
+                        <!-- WhatsApp Row -->
+                        <div class="flex gap-2">
+                            <a href="${company.waLink}" target="_blank" rel="noopener noreferrer" class="flex-1 btn-wa text-white text-sm font-semibold py-2 px-3 rounded-xl flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                WhatsApp
+                            </a>
+                            <button onclick="copyText('${company.phone}', this)" class="bg-white/10 hover:bg-white/20 border border-white/10 p-2 rounded-xl text-gray-300 transition" title="Copy Number">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- Filtering Logic ---
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const industry = document.getElementById('industryFilter').value;
+            const city = document.getElementById('cityFilter').value;
+
+            filteredData = companiesData.filter(c => {
+                const matchesSearch = c.name.toLowerCase().includes(searchTerm) || 
+                                      c.city.toLowerCase().includes(searchTerm) || 
+                                      c.industry.toLowerCase().includes(searchTerm);
+                const matchesIndustry = industry === "" || c.industry === industry;
+                const matchesCity = city === "" || c.city === city;
+                
+                return matchesSearch && matchesIndustry && matchesCity;
+            });
+
+            renderGrid();
+        }
+
+        function resetFilters() {
+            document.getElementById('searchBox').value = '';
+            document.getElementById('industryFilter').value = '';
+            document.getElementById('cityFilter').value = '';
+            applyFilters();
+        }
+
+        // Event listeners for filters
+        document.getElementById('searchBox').addEventListener('input', applyFilters);
+        document.getElementById('industryFilter').addEventListener('change', applyFilters);
+        document.getElementById('cityFilter').addEventListener('change', applyFilters);
+
+        // --- Utilities (Copy, Toast, Animations) ---
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        function copyText(text, btnElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Visual feedback on button
+                const originalHtml = btnElement.innerHTML;
+                btnElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                btnElement.classList.add('bg-green-500/20', 'border-green-500/50');
+                
+                showToast(`Copied: ${text}`);
+                
+                setTimeout(() => {
+                    btnElement.innerHTML = originalHtml;
+                    btnElement.classList.remove('bg-green-500/20', 'border-green-500/50');
+                }, 2000);
+            });
+        }
+
+        function copyVisibleEmails() {
+            if (filteredData.length === 0) {
+                showToast("No emails to copy! Adjust filters.");
+                return;
+            }
+            const emails = filteredData.map(c => c.email).join(', ');
+            navigator.clipboard.writeText(emails).then(() => {
+                showToast(`✅ Copied ${filteredData.length} emails!`);
+            });
+        }
+
+        function copyVisiblePhones() {
+            if (filteredData.length === 0) {
+                showToast("No WhatsApp numbers to copy! Adjust filters.");
+                return;
+            }
+            const phones = filteredData.map(c => c.phone).join(', ');
+            navigator.clipboard.writeText(phones).then(() => {
+                showToast(`✅ Copied ${filteredData.length} WhatsApp numbers!`);
+            });
+        }
+
+        // Number Counter Animation
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                // easeOutQuart
+                const easeProgress = 1 - Math.pow(1 - progress, 4);
+                obj.innerHTML = Math.floor(easeProgress * (end - start) + start).toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function updateStatsUI(animate = false) {
+            const elComp = document.getElementById('statCompanies');
+            const elMail = document.getElementById('statEmails');
+            const elWa = document.getElementById('statWa');
+
+            if(animate) {
+                animateValue(elComp, 0, totalStats.companies, 2000);
+                animateValue(elMail, 0, totalStats.emails, 2000);
+                animateValue(elWa, 0, totalStats.wa, 2000);
+            } else {
+                elComp.innerHTML = totalStats.companies.toLocaleString();
+                elMail.innerHTML = totalStats.emails.toLocaleString();
+                elWa.innerHTML = totalStats.wa.toLocaleString();
+            }
+        }
+
+        function setupTicker() {
+            const ticker = document.getElementById('tickerContent');
+            const items = [
+                "⚡ New company added: Al Noor Tech",
+                "🏢 50 new registrations in Riyadh today",
+                "✅ Saudi Manpower Group updated contact info",
+                "📈 Construction sector growing fastest this week",
+                "🔔 Turn on notifications for instant lead alerts"
+            ];
+            // Double it for smooth infinite scrolling
+            ticker.innerHTML = items.map(i => `<span class="mx-8">${i}</span>`).join('') + 
+                               items.map(i => `<span class="mx-8">${i}</span>`).join('');
+        }
+
+        // --- CORE REQUIREMENT: Simulate Auto-Updates (Live Backend) ---
+
+        const terminalLogs = [
+            "> Scanning Ministry of Commerce registry...",
+            "> Validating new CR numbers...",
+            "> Extracting contact details...",
+            "> Verifying WhatsApp endpoints...",
+            "> Success. Data parsed."
+        ];
+
+        function simulateAutoUpdate() {
+            setInterval(() => {
+                // 1. Generate a new company
+                const newCompany = generateCompany(true);
+                
+                // 2. Add to data at the beginning
+                companiesData.unshift(newCompany);
+                
+                // Keep array size manageable for demo
+                if(companiesData.length > 200) companiesData.pop(); 
+                
+                // 3. Update Stats
+                totalStats.companies++;
+                totalStats.emails++;
+                totalStats.wa++;
+                updateStatsUI(false);
+
+                // 4. Update Terminal UI
+                const terminal = document.getElementById('terminalText');
+                const log = document.createElement('div');
+                log.textContent = terminalLogs[Math.floor(Math.random() * terminalLogs.length)];
+                terminal.appendChild(log);
+                
+                const foundLog = document.createElement('div');
+                foundLog.innerHTML = `<span class="text-white">> [NEW] Added:</span> ${newCompany.name}`;
+                terminal.appendChild(foundLog);
+                
+                // keep terminal clean
+                while(terminal.children.length > 5) {
+                    terminal.removeChild(terminal.firstChild);
+                }
+
+                // 5. Visual Cue on Directory Title
+                const pulse = document.getElementById('updatePulse');
+                pulse.classList.remove('hidden');
+                setTimeout(() => pulse.classList.add('hidden'), 2000);
+
+                // 6. Re-apply filters to update the view immediately if applicable
+                // Check if the new company matches current filters before showing toast
+                const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+                const industry = document.getElementById('industryFilter').value;
+                const city = document.getElementById('cityFilter').value;
+                
+                const matchesSearch = newCompany.name.toLowerCase().includes(searchTerm) || 
+                                      newCompany.city.toLowerCase().includes(searchTerm) || 
+                                      newCompany.industry.toLowerCase().includes(searchTerm);
+                const matchesIndustry = industry === "" || newCompany.industry === industry;
+                const matchesCity = city === "" || newCompany.city === city;
+
+                if (matchesSearch && matchesIndustry && matchesCity) {
+                    applyFilters(); // This will re-render and trigger the new-item-anim
+                    showToast(`🔥 Auto-Added: ${newCompany.name} (${newCompany.city})`);
+                }
+
+            }, 8000); // Add a new company every 8 seconds for demonstration
+        }
+
+        // --- Start Application ---
+        window.onload = () => {
+            initData();
+            // Start the auto-update engine after a short delay
+            setTimeout(simulateAutoUpdate, 3000); 
+        };
+
+    </script>
+</body>
+</html>
